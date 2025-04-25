@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
 const planeSchema = new mongoose.Schema({
-  title: { type: String, required: true },
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
   description: { type: String, required: true },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  capacity: { type: Number, required: true },
+  planeImage: { type: String, required: true },
 });
 
 const PlaneModel = mongoose.model("Plane", planeSchema);
