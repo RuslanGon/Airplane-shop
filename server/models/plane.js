@@ -5,7 +5,7 @@ const planeSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   description: { type: String, required: true },
   capacity: { type: Number, required: true },
-  planeImage: { type: String, required: true },
+  planeImage: { type: String },
 });
 
 const PlaneModel = mongoose.model("Plane", planeSchema);
