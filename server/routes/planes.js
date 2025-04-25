@@ -1,7 +1,20 @@
 import express from 'express'
+import multer from 'multer'
 import { createPlane, getPlanes } from '../controllers/planes.js'
+import path from 'path'
 
 const router = express.Router()
+
+// Показываем где хроняться картинки
+const storage = multer.diskStorage({
+    destination: './assets',
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({ storage })
+
 // Получение всех самолетов
 router.get('/', getPlanes )
 
@@ -10,8 +23,7 @@ router.get('/:id', async (req, res) => {
     res.send('Get singl plane')
 })
 // Создание оного самолета
-router.post('/', createPlane)
-
+router.post('/', upload.single('planeImage'), createPlane)
 
 
 
