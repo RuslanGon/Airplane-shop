@@ -1,15 +1,13 @@
 import React from 'react'
 import './App.css'
+import { Route, Routes } from 'react-router-dom'
+import HomePage from './page/HomePage.jsx'
 
 const App = () => {
   return (
-    <div>
-      hello word
-      <h1>
-        xcwdcw
-      </h1>
-      <h2>wdcwdc</h2>
-    </div>
+   <Routes>
+    <Route path='/' element={<HomePage />}></Route>
+   </Routes>
   )
 }
 
