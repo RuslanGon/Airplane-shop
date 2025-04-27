@@ -48,4 +48,20 @@ export const getPlanes = async (req, res) => {
       res.status(500).json({ error: 'Ошибка при создании самолёта' });
     }
   };
+
+  export const getPlaneById = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const plane = await PlaneModel.findById(id);
+      if (!plane) {
+        return res.status(404).json({ error: 'Самолёт не найден' });
+      }
+      res.status(200).json(plane);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Ошибка при получении данных о самолёте' });
+    }
+  };
+
   

@@ -1,6 +1,6 @@
 import express from 'express'
 import multer from 'multer'
-import { createPlane, getPlanes } from '../controllers/planes.js'
+import { createPlane, getPlaneById, getPlanes } from '../controllers/planes.js'
 import path from 'path'
 
 const router = express.Router()
@@ -19,9 +19,7 @@ const upload = multer({ storage })
 router.get('/', getPlanes )
 
 // Выбор одного самолета по id
-router.get('/:id', async (req, res) => {
-    res.send('Get singl plane')
-})
+router.get('/:id', getPlaneById)
 // Создание оного самолета
 router.post('/', upload.single('planeImage'), createPlane)
 
