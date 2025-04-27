@@ -20,6 +20,7 @@ export const getPlanes = async (req, res) => {
       if (!price) error.price = 'Поле "price" обязательно для заполнения';
       if (!description) error.description = 'Поле "description" обязательно для заполнения';
       if (!capacity) error.capacity = 'Поле "capacity" обязательно для заполнения';
+      if (!planeImage && !req.file) error.planeImage = 'Поле "planeImage" обязательно для заполнения';
   
       if (Object.keys(error).length > 0) {
         return res.status(400).json({ error });
