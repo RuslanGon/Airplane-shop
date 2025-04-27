@@ -11,11 +11,18 @@ export const getPlanes = async (req, res) => {
   };
 
   export const createPlane = async (req, res) => {
+    const error = {};
+  
     try {
       const { name, price, description, capacity, planeImage } = req.body;
   
-      if (!name || !price || !description || !capacity) {
-        return res.status(400).json({ error: 'Все поля обязательны' });
+      if (!name) error.name = 'Поле "name" обязательно для заполнения';
+      if (!price) error.price = 'Поле "price" обязательно для заполнения';
+      if (!description) error.description = 'Поле "description" обязательно для заполнения';
+      if (!capacity) error.capacity = 'Поле "capacity" обязательно для заполнения';
+  
+      if (Object.keys(error).length > 0) {
+        return res.status(400).json({ error });
       }
   
       const imageUrl = req.file
