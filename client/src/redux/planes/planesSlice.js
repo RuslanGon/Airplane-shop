@@ -32,8 +32,23 @@ const initialState = {
 const planesSlice = createSlice({
   name: 'planes',
   initialState,
-  reducers: {
-   
+  extraReducers: (builder) => {
+    builder
+      .addCase(getPlanes.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.message = '';
+      })
+      .addCase(getPlanes.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.planes = action.payload;
+        state.isError = false;
+      })
+      .addCase(getPlanes.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload.message || 'Что-то пошло не так';
+      });
   },
 });
 
