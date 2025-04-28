@@ -1,8 +1,8 @@
 import css from './Content.module.css'
 
-const Content = () => {
+const Content = ({children, className = ''}) => {
   return (
-    <div>Content</div>
+    <div className={`${css.container} ${className}`}>{ children }</div>
   )
 }
 

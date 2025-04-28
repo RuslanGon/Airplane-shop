@@ -1,13 +1,18 @@
-import React from 'react'
-import css from './Header.module.css'
+import React from "react";
+import css from "./Header.module.css";
+import Content from "./Content.jsx";
+import Wave from '/src/assets/wave.svg';
 
 const Header = () => {
   return (
     <div className={css.header}>
-        <h1 className={css.title}>Путешествуйте с комфортном</h1>
-        <p className={css.desc}>С нашей компанией Вы забудете обо всем, кроме высокого уровня путешествий</p>
+        <Content className={css.content}>
+            <h1 className={css.title}>{ `Путешествуйте с\n Комфортом` }</h1>
+            <p className={css.desc}>{`C нашей компанией вы забудете обо всем кроме\n высокого уровня путешествий`}</p>
+        </Content>
+        <img src={ Wave } alt="" className={ css.wave }/>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
