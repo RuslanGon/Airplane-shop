@@ -11,8 +11,8 @@ import { useSortPlane } from "../hooks/useSortPlane.js";
 export const Planes = () => {
   const dispatch = useDispatch();
   const { planes, isLoading } = useSelector((state) => state.planes);
-  const { sortedPlanes, toggleSort, isDescSort } = useSortPlane(planes);
-
+  const { sortedPlanes, toggleSort, sortBy, setSortBy, isDescSort } = useSortPlane(planes || []); // Передаем пустой массив, если planes нет
+  
   useEffect(() => {
     dispatch(getPlanes());
   }, [dispatch]);
@@ -25,12 +25,20 @@ export const Planes = () => {
     <div>
       <div className={css.sort}>
         <div className={css.planesHeader}>
-          <Button 
-            className={css.sortBtn}
-            onClick={toggleSort}
-          >
-            Сортировать по цене {isDescSort ? "↓" : "↑"}
+          <Button className={css.sortBtn} onClick={toggleSort}>
+            Сортировать {isDescSort ? "↓" : "↑"}
           </Button>
+          
+          <select
+            className={css.sortSelect}
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+          >
+            <option value="price">По цене</option>
+            <option value="capacity">По вместимости</option>
+            <option value="name">По названию</option>
+          </select>
+
           <Link to="/create" className={css.createPlaneBtn}>
             Добавить самолет
           </Link>

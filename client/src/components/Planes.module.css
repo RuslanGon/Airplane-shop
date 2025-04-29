@@ -93,3 +93,12 @@
   font-weight: bold;
   color: #442d85;
 }
+
+.sortSelect {
+  margin-left: -700px;
+  background-color:#2FB5FC ;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 6px;
+
+}
