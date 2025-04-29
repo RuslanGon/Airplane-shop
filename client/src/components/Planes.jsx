@@ -6,10 +6,12 @@ import { useEffect } from "react";
 import { getPlanes } from "../redux/planes/planesSlice.js";
 import Spinner from "./Spinner.jsx";
 import PlaneItem from "./PlaneItem.jsx";
+import { useSortPlane } from "../hooks/useSortPlane.js";
 
 export const Planes = () => {
   const dispatch = useDispatch();
   const { planes, isLoading } = useSelector((state) => state.planes);
+  const { sortedPlanes, toggleSort, isDescSort } = useSortPlane(planes);
 
   useEffect(() => {
     dispatch(getPlanes());
@@ -23,14 +25,21 @@ export const Planes = () => {
     <div>
       <div className={css.sort}>
         <div className={css.planesHeader}>
-          <Button className={css.sortBtn}>Сортировать по цене</Button>
-          <Link to='/create' className={css.createPlaneBtn}>Добавить самолет</Link>
+          <Button 
+            className={css.sortBtn}
+            onClick={toggleSort}
+          >
+            Сортировать по цене {isDescSort ? "↓" : "↑"}
+          </Button>
+          <Link to="/create" className={css.createPlaneBtn}>
+            Добавить самолет
+          </Link>
         </div>
       </div>
 
       <div className={css.planesGrid}>
-        {planes &&
-          planes.map((plane) => (
+        {sortedPlanes &&
+          sortedPlanes.map((plane) => (
             <PlaneItem key={plane._id} plane={plane} />
           ))}
       </div>

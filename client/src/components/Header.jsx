@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <div className={css.header}>
         <Content className={css.content}>
-            <h1 className={css.title}>{ `Путешествуйте с\n Комфортом` }</h1>
+            <h1 className={css.title}>{ `Путешествуйте с Комфортом` }</h1>
             <p className={css.desc}>{`C нашей компанией вы забудете обо всем кроме\n высокого уровня путешествий`}</p>
         </Content>
         <img src={ Wave } alt="" className={ css.wave }/>
