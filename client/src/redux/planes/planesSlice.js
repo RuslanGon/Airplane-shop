@@ -46,7 +46,7 @@ export const updatePlane = createAsyncThunk(
   async ({ id, updatedData }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `http://localhost:3001/api/planes/${id}/edit`, // Обновленный URL с '/edit'
+        `http://localhost:3001/api/planes/${id}/edit`,
         updatedData, // Здесь передаем FormData
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
