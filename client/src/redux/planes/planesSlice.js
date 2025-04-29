@@ -27,8 +27,21 @@ export const postPlane = createAsyncThunk(
   }
 );
 
+// Удаление самолета
+export const deletePlane = createAsyncThunk(
+  "DELETE_PLANE",
+  async (planeId, thunkAPI) => {
+    try {
+      await axios.delete(`http://localhost:3001/api/planes/${planeId}`);
+      return planeId; // Возвращаем ID удаленного самолета
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const initialState = {
-  planes: null,
+  planes: [],  // Начальное значение пустой массив
   isError: false,
   isLoading: false,
   message: ''
@@ -39,6 +52,7 @@ const planesSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
+      // Получение всех самолетов
       .addCase(getPlanes.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
@@ -54,6 +68,8 @@ const planesSlice = createSlice({
         state.isError = true;
         state.message = action.payload.message || 'Что-то пошло не так';
       })
+
+      // Добавление нового самолета
       .addCase(postPlane.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
@@ -61,13 +77,31 @@ const planesSlice = createSlice({
       })
       .addCase(postPlane.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.planes.push(action.payload);
+        state.planes.push(action.payload); // Добавляем новый самолет в массив
         state.isError = false;
       })
       .addCase(postPlane.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload.message || 'Ошибка при создании самолета';
+      })
+
+      // Удаление самолета
+      .addCase(deletePlane.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.message = '';
+      })
+      .addCase(deletePlane.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // Удаляем самолет из массива по ID
+        state.planes = state.planes.filter(plane => plane._id !== action.payload);
+        state.isError = false;
+      })
+      .addCase(deletePlane.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload.message || 'Ошибка при удалении самолета';
       });
   },
 });
