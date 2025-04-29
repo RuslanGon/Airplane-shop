@@ -45,6 +45,8 @@ const CreatePlane = () => {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             required
+            min="0" 
+            step="0.01"  // Чтобы можно было вводить числа с двумя знаками после запятой
           />
         </div>
 
@@ -66,6 +68,8 @@ const CreatePlane = () => {
             value={capacity}
             onChange={(e) => setCapacity(e.target.value)}
             required
+            min="1"  // Не даём пользователю вводить отрицательные значения или ноль
+            step="1"  // Целое число
           />
         </div>
 
@@ -79,7 +83,6 @@ const CreatePlane = () => {
             required
           />
         </div>
-
         <button type="submit">Создать самолет</button>
       </form>
     </div>
