@@ -44,7 +44,11 @@ export const updatePlane = createAsyncThunk(
   'planes/updatePlane',
   async ({ id, updatedData }, thunkAPI) => {
     try {
-      const response = await axios.patch(`/planes/${id}`, updatedData);
+      const response = await axios.patch(
+        `http://localhost:3001/api/planes/${id}`,
+        updatedData, // здесь передаем FormData
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -52,8 +56,21 @@ export const updatePlane = createAsyncThunk(
   }
 );
 
+export const getPlaneById = createAsyncThunk(
+  'planes/getPlaneById',
+  async (planeId, thunkAPI) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/planes/${planeId}`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || { message: 'Ошибка при получении самолета' });
+    }
+  }
+);
+
 const initialState = {
   planes: [],  // Начальное значение пустой массив
+  plane: null,
   isError: false,
   isLoading: false,
   message: ''
@@ -133,7 +150,24 @@ const planesSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload?.message || 'Ошибка при обновлении самолета';
-      });
+      })
+      // Получение одного самолета по ID
+      .addCase(getPlaneById.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.message = '';
+        state.plane = null;
+      })
+      .addCase(getPlaneById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.plane = action.payload;
+        state.isError = false;
+      })
+      .addCase(getPlaneById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload?.message || 'Ошибка при получении самолета';
+      })
   },
 });
 

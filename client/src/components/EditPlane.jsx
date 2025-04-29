@@ -1,127 +1,136 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { updatePlane } from '../redux/planes/planesSlice';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getPlaneById, updatePlane } from '../redux/planes/planesSlice.js';
 import css from './EditPlane.module.css'
 
+
 const EditPlane = () => {
-  const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { planeId } = useParams();
 
-  const plane = useSelector(state =>
-    state.planes.planes.find(plane => plane._id === id)
-  );
+  const plane = useSelector(state => state.planes.plane);
 
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
     price: '',
     capacity: '',
-    planeImage: '',
+    description: '',
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
+
+  useEffect(() => {
+    if (planeId) {
+      dispatch(getPlaneById (planeId));
+    }
+  }, [dispatch, planeId]);
 
   useEffect(() => {
     if (plane) {
       setFormData({
-        name: '',
-        description: '',
-        price: '',
-        capacity: '',
-        planeImage: '',
+        name: plane.name || '',
+        price: plane.price || '',
+        capacity: plane.capacity || '',
+        description: plane.description || '',
       });
+      setImagePreview(plane.planeImage || '');
     }
   }, [plane]);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = e => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
+    const updatedData = new FormData();
 
-    // Удаляем пустые поля
-    const updatedFields = Object.fromEntries(
-      Object.entries(formData).filter(([ value]) => value.trim() !== '')
-    );
-
-
-    if (Object.keys(updatedFields).length === 0) {
-      alert('Пожалуйста, измените хотя бы одно поле.');
-      return;
+    updatedData.append('name', formData.name);
+    updatedData.append('price', formData.price);
+    updatedData.append('capacity', formData.capacity);
+    updatedData.append('description', formData.description);
+    if (imageFile) {
+      updatedData.append('planeImage', imageFile);
     }
 
-    dispatch(updatePlane({ id, updatedData: updatedFields }));
-    navigate(`/planes/${id}`);
+    dispatch(updatePlane({ id: planeId, updatedData }));
+    navigate(`/planes/${planeId}`);
   };
 
-  if (!plane) return <div>Загрузка...</div>;
+  if (!plane) {
+    return <div>Самолёт не найден</div>;
+  }
 
   return (
     <div className={css.container}>
-      <h2>Редактировать самолет</h2>
-      <form onSubmit={handleSubmit} >
+      <h2>Редактировать самолёт</h2>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div>
-          <label>Название:</label>
+          <label htmlFor="name">Название</label>
           <input
             type="text"
             name="name"
-            placeholder={plane.name}
             value={formData.name}
             onChange={handleChange}
+            required
           />
         </div>
 
         <div>
-          <label>Описание:</label>
-          <textarea
-            name="description"
-            placeholder={plane.description}
-            value={formData.description}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
-          <label>Цена (грн):</label>
+          <label htmlFor="price">Цена</label>
           <input
             type="number"
             name="price"
-            placeholder={plane.price}
             value={formData.price}
             onChange={handleChange}
+            required
           />
         </div>
 
         <div>
-          <label>Вместимость (чел.):</label>
+          <label htmlFor="capacity">Вместимость</label>
           <input
             type="number"
             name="capacity"
-            placeholder={plane.capacity}
             value={formData.capacity}
             onChange={handleChange}
+            required
           />
         </div>
 
         <div>
-          <label>URL изображения:</label>
-          <input
-            type="text"
-            name="planeImage"
-            placeholder={plane.planeImage}
-            value={formData.planeImage}
+          <label htmlFor="description">Описание</label>
+          <textarea
+            name="description"
+            rows="4"
+            value={formData.description}
             onChange={handleChange}
+            required
           />
         </div>
 
-        <button type="submit" style={{ padding: '10px', backgroundColor: '#442d85', color: '#fff', border: 'none', borderRadius: '5px' }}>
-          Сохранить изменения
-        </button>
+        <div>
+          <label htmlFor="planeImage">Изображение</label>
+          <input type="file" accept="image/*" onChange={handleImageChange} />
+          {imagePreview && (
+            <div style={{ marginTop: '10px' }}>
+              <img src={imagePreview} alt="Предпросмотр" width="200" />
+            </div>
+          )}
+        </div>
+
+        <button type="submit">Сохранить</button>
       </form>
     </div>
   );
