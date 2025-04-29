@@ -98,3 +98,19 @@
   font-weight: bold;
   color: #442d85;
 }
+
+.btn_delete {
+  background-color: transparent; /* Прозрачный фон */
+  border: none;                  /* Убираем обводку */
+  cursor: pointer;               /* Указатель курсора на кнопке */
+  padding: 0;                     /* Убираем внутренние отступы */
+  display: flex;                  /* Для правильного выравнивания иконки */
+  justify-content: center;        /* Выравнивание иконки по центру */
+  align-items: center;   
+  color: #000;         /* Выравнивание иконки по вертикали */
+}
+
+.btn_delete:hover {
+  opacity: 0.7;  
+  background-color: transparent;                 /* Немного затемняем иконку при наведении */
+}
