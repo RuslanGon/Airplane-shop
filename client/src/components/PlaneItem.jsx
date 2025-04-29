@@ -29,18 +29,15 @@ const PlaneItem = ({ plane }) => {
           <strong>Вместимость:</strong> {plane.capacity} человек
         </p>
       </Link>
-      
       <div className={css.buttons}>
-        {/* Кнопка для удаления */}
-        <button onClick={handleDelete} className={css.btn_delete}>
-          <FaShoppingCart size={20} />
-        </button>
+          <button onClick={handleDelete} className={css.btn_delete}>
+            <FaShoppingCart size={20} />
+          </button>
 
-        {/* Кнопка для редактирования */}
-        <Link to={`/planes/${plane._id}/edit`} className={css.btn_edit}>
-          <FaEdit size={20} />
-        </Link>
-      </div>
+          <Link to={`/planes/${plane._id}/edit`} className={css.btn_edit}>
+            <FaEdit size={20} />
+          </Link>
+        </div>
     </div>
   );
 };
