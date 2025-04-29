@@ -40,6 +40,18 @@ export const deletePlane = createAsyncThunk(
   }
 );
 
+export const updatePlane = createAsyncThunk(
+  'planes/updatePlane',
+  async ({ id, updatedData }, thunkAPI) => {
+    try {
+      const response = await axios.patch(`/planes/${id}`, updatedData);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const initialState = {
   planes: [],  // Начальное значение пустой массив
   isError: false,
@@ -102,6 +114,25 @@ const planesSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload.message || 'Ошибка при удалении самолета';
+      })
+      // Обновление самолета
+      .addCase(updatePlane.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.message = '';
+      })
+      .addCase(updatePlane.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.planes.findIndex(plane => plane._id === action.payload._id);
+        if (index !== -1) {
+          state.planes[index] = action.payload;
+        }
+        state.isError = false;
+      })
+      .addCase(updatePlane.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload?.message || 'Ошибка при обновлении самолета';
       });
   },
 });

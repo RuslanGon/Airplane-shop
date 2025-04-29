@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePlane } from '../redux/planes/planesSlice';
+import css from './EditPlane.module.css'
 
 const EditPlane = () => {
   const { id } = useParams();
@@ -9,7 +10,7 @@ const EditPlane = () => {
   const navigate = useNavigate();
 
   const plane = useSelector(state =>
-    state.planes.items.find(plane => plane._id === id)
+    state.planes.planes.find(plane => plane._id === id)
   );
 
   const [formData, setFormData] = useState({
@@ -45,8 +46,9 @@ const EditPlane = () => {
 
     // Удаляем пустые поля
     const updatedFields = Object.fromEntries(
-      Object.entries(formData).filter(([key, value]) => value.trim() !== '')
+      Object.entries(formData).filter(([ value]) => value.trim() !== '')
     );
+
 
     if (Object.keys(updatedFields).length === 0) {
       alert('Пожалуйста, измените хотя бы одно поле.');
@@ -60,9 +62,9 @@ const EditPlane = () => {
   if (!plane) return <div>Загрузка...</div>;
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className={css.container}>
       <h2>Редактировать самолет</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '400px' }}>
+      <form onSubmit={handleSubmit} >
         <div>
           <label>Название:</label>
           <input
