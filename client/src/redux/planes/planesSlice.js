@@ -40,13 +40,14 @@ export const deletePlane = createAsyncThunk(
   }
 );
 
+// Обновление самолета
 export const updatePlane = createAsyncThunk(
   'planes/updatePlane',
   async ({ id, updatedData }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `http://localhost:3001/api/planes/${id}/edit`,
-        updatedData, // здесь передаем FormData
+        `http://localhost:3001/api/planes/${id}/edit`, // Обновленный URL с '/edit'
+        updatedData, // Здесь передаем FormData
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
       return response.data;
@@ -56,6 +57,7 @@ export const updatePlane = createAsyncThunk(
   }
 );
 
+// Получение одного самолета по ID
 export const getPlaneById = createAsyncThunk(
   'planes/getPlaneById',
   async (planeId, thunkAPI) => {
@@ -81,7 +83,6 @@ const planesSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      // Получение всех самолетов
       .addCase(getPlanes.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
@@ -98,7 +99,6 @@ const planesSlice = createSlice({
         state.message = action.payload.message || 'Что-то пошло не так';
       })
 
-      // Добавление нового самолета
       .addCase(postPlane.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
@@ -115,7 +115,6 @@ const planesSlice = createSlice({
         state.message = action.payload.message || 'Ошибка при создании самолета';
       })
 
-      // Удаление самолета
       .addCase(deletePlane.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
@@ -123,7 +122,6 @@ const planesSlice = createSlice({
       })
       .addCase(deletePlane.fulfilled, (state, action) => {
         state.isLoading = false;
-        // Удаляем самолет из массива по ID
         state.planes = state.planes.filter(plane => plane._id !== action.payload);
         state.isError = false;
       })
@@ -132,7 +130,7 @@ const planesSlice = createSlice({
         state.isError = true;
         state.message = action.payload.message || 'Ошибка при удалении самолета';
       })
-      // Обновление самолета
+      
       .addCase(updatePlane.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
@@ -151,7 +149,7 @@ const planesSlice = createSlice({
         state.isError = true;
         state.message = action.payload?.message || 'Ошибка при обновлении самолета';
       })
-      // Получение одного самолета по ID
+
       .addCase(getPlaneById.pending, (state) => {
         state.isLoading = true;
         state.isError = false;

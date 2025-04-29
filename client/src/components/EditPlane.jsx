@@ -4,7 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getPlaneById, updatePlane } from '../redux/planes/planesSlice.js';
 import css from './EditPlane.module.css'
 
-
 const EditPlane = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,7 +22,7 @@ const EditPlane = () => {
 
   useEffect(() => {
     if (planeId) {
-      dispatch(getPlaneById (planeId));
+      dispatch(getPlaneById(planeId));
     }
   }, [dispatch, planeId]);
 
@@ -64,8 +63,15 @@ const EditPlane = () => {
       updatedData.append('planeImage', imageFile);
     }
 
-    dispatch(updatePlane({ id: planeId, updatedData }));
-    navigate(`/planes/${planeId}`);
+    dispatch(updatePlane({ id: planeId, updatedData }))
+      .then(() => {
+        // После успешного обновления данных, перенаправляем на главную страницу
+        navigate('/');
+      })
+      .catch((error) => {
+        // Обработка ошибок, если необходимо
+        console.error(error);
+      });
   };
 
   if (!plane) {
