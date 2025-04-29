@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import css from './CreatePlane.module.css';
+import { useDispatch } from 'react-redux';
+import { postPlane } from '../redux/planes/planesSlice.js';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePlane = () => {
   const [name, setName] = useState('');
@@ -7,9 +10,13 @@ const CreatePlane = () => {
   const [description, setDescription] = useState('');
   const [capacity, setCapacity] = useState('');
   const [planeImage, setPlaneImage] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Формируем данные нового самолета
     const newPlane = {
       name,
       price: parseFloat(price),
@@ -18,8 +25,21 @@ const CreatePlane = () => {
       planeImage,
     };
 
-    console.log('New plane data: ', newPlane);
-    // Здесь можно отправить newPlane в сервер через API
+    // Диспетчерим экшн для создания самолета
+    const action = await dispatch(postPlane(newPlane));
+
+    // Проверяем, был ли запрос успешным
+    if (action.type === 'POST_PLANE/fulfilled') {
+      // Если самолет был успешно создан, переходим на домашнюю страницу
+      navigate('/');
+    }
+
+    // После отправки данных можно очистить форму, если нужно
+    setName('');
+    setPrice('');
+    setDescription('');
+    setCapacity('');
+    setPlaneImage('');
   };
 
   return (
@@ -46,7 +66,7 @@ const CreatePlane = () => {
             onChange={(e) => setPrice(e.target.value)}
             required
             min="0" 
-            step="0.01"  // Чтобы можно было вводить числа с двумя знаками после запятой
+            step="0.01"  
           />
         </div>
 
@@ -68,8 +88,8 @@ const CreatePlane = () => {
             value={capacity}
             onChange={(e) => setCapacity(e.target.value)}
             required
-            min="1"  // Не даём пользователю вводить отрицательные значения или ноль
-            step="1"  // Целое число
+            min="1" 
+            step="1"  
           />
         </div>
 
