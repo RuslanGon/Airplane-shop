@@ -1,9 +1,10 @@
 import React from 'react';
 import css from './Planes.module.css';
+import { Link } from 'react-router-dom';
 
 const PlaneItem = ({ plane }) => {
   return (
-    <div className={css.planeCard}>
+    <Link to={`/planes/${plane._id}`}  className={css.planeCard}>
       <img
         src={plane.planeImage}
         alt={plane.name}
@@ -17,7 +18,7 @@ const PlaneItem = ({ plane }) => {
       <p>
         <strong>Вместимость:</strong> {plane.capacity} человек
       </p>
-    </div>
+    </Link>
   );
 };
 
