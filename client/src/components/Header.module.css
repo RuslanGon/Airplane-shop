@@ -13,9 +13,11 @@
 }
 
 .title {
-    font-size: 60px;
+padding-top: 30px;
+    font-size: 70px;
     margin-bottom: 20px;
     opacity: 0;
+    color: gold;
     transform: translateY(20px);
     animation-duration: 1s;
     animation-delay: .5s;
@@ -27,7 +29,8 @@
 
 
 .desc {
-    font-size: 30px;
+    font-size: 40px;
+    color: white;
     opacity: 0;
     transform: translateY(20px);
     animation-duration: 1s;

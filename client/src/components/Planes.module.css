@@ -1,18 +1,21 @@
 .sort {
-  height: 80px;
+  height: 70px; /* Увеличиваем высоту */
   background-color: #442d85;
   width: 100%;
   margin-bottom: 50px;
   display: flex;
-  align-items: center;
-  justify-content: space-between; /* Размещает элементы по краям */
+  flex-direction: column; /* Располагаем элементы в колонку */
+  align-items: center; /* Центрируем элементы по горизонтали */
+  justify-content: center; /* Центрируем элементы по вертикали */
   padding: 0 20px;
 }
 
 .planesHeader {
-  display: flex; /* Добавляем флекс для выравнивания */
-  width: 100%; /* Занимает всю ширину */
-  justify-content: space-between; /* Размещает кнопки по краям */
+  display: flex; 
+  flex-direction: row; /* Элементы будут располагаться по горизонтали */
+  align-items: center; /* Центрируем по вертикали */
+  justify-content: space-between; /* Размещаем элементы с равным промежутком */
+  width: 100%;
 }
 
 .sortBtn {
@@ -22,7 +25,16 @@
   border: none;
   cursor: pointer;
   display: inline-block;
-  flex-grow: 0; /* Не расширяется */
+  margin-right: 20px; /* Отступ справа между кнопкой и селектом */
+}
+
+.sortSelect {
+  background-color: #2FB5FC;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 6px;
+  font-size: 16px;
+  margin-right: 20px; /* Отступ справа между селектом и кнопкой "Добавить самолет" */
 }
 
 .createPlaneBtn {
@@ -34,7 +46,6 @@
   padding: 8px 12px;
   text-decoration: none;
   display: inline-block;
-  flex-grow: 0; /* Не расширяется */
 }
 
 .planesGrid {
@@ -55,14 +66,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   margin-left: 30px;
   margin-right: 30px;
-}
-
-.planeCard:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .planeImage {
@@ -92,13 +97,4 @@
 .planeCard p strong {
   font-weight: bold;
   color: #442d85;
-}
-
-.sortSelect {
-  margin-left: -700px;
-  background-color:#2FB5FC ;
-  border: none;
-  border-radius: 8px;
-  padding: 4px 6px;
-
 }
