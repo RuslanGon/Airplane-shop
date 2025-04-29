@@ -80,28 +80,34 @@ export const getPlanes = async (req, res) => {
 
   export const patchPlane = async (req, res) => {
     const { id } = req.params;
-    const { name, price, description, capacity, planeImage } = req.body; 
+    const { name, price, description, capacity, planeImage } = req.body;
   
     try {
       const updateData = {};
   
+      // Добавление обновленных данных в объект
       if (name) updateData.name = name;
       if (price) updateData.price = price;
       if (description) updateData.description = description;
       if (capacity) updateData.capacity = capacity;
-      if (planeImage) updateData.planeImage = planeImage;
   
-      const plane = await PlaneModel.findByIdAndUpdate(
-        id,
-        { $set: updateData }, 
-        { new: true } 
-      );
+      // Обработка нового изображения (если оно есть)
+      if (req.file) {
+        const imageUrl = `http://localhost:${process.env.PORT}/static/${req.file.filename}`;
+        updateData.planeImage = imageUrl; // Присваиваем новое изображение
+      } else if (planeImage) {
+        // Если изображение передано в теле запроса
+        updateData.planeImage = planeImage.startsWith('http') ? planeImage : `http://localhost:${process.env.PORT}/static/${planeImage}`;
+      }
+  
+      // Обновление данных самолета
+      const plane = await PlaneModel.findByIdAndUpdate(id, { $set: updateData }, { new: true });
   
       if (!plane) {
         return res.status(404).json({ error: 'Самолет не найден' });
       }
   
-      res.status(200).json(plane);
+      res.status(200).json(plane); // Ответ с обновленным самолетом
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Ошибка при обновлении самолета' });
