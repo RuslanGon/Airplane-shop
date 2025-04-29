@@ -114,3 +114,19 @@
   opacity: 0.7;  
   background-color: transparent;                 /* Немного затемняем иконку при наведении */
 }
+
+.btn_delete,
+.btn_edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn_edit {
+  color: #4CAF50; /* Зеленый цвет для редактирования */
+}
+
+.btn_delete {
+  color: #f44336; /* Красный цвет для удаления */
+}
+

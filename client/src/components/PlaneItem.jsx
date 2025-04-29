@@ -1,14 +1,14 @@
 import React from 'react';
 import css from './Planes.module.css';
 import { Link } from 'react-router-dom';
-import { FaShoppingCart } from 'react-icons/fa';  
+import { FaShoppingCart, FaEdit } from 'react-icons/fa';  
 import { useDispatch } from 'react-redux';
 import { deletePlane } from '../redux/planes/planesSlice.js';
 
 const PlaneItem = ({ plane }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const handleDlete = () => {
+  const handleDelete = () => {
     dispatch(deletePlane(plane._id)); 
   };
 
@@ -29,9 +29,18 @@ const PlaneItem = ({ plane }) => {
           <strong>Вместимость:</strong> {plane.capacity} человек
         </p>
       </Link>
-      <button onClick={handleDlete} className={css.btn_delete}>
-        <FaShoppingCart size={20} />
-      </button>
+      
+      <div className={css.buttons}>
+        {/* Кнопка для удаления */}
+        <button onClick={handleDelete} className={css.btn_delete}>
+          <FaShoppingCart size={20} />
+        </button>
+
+        {/* Кнопка для редактирования */}
+        <Link to={`/planes/${plane._id}/edit`} className={css.btn_edit}>
+          <FaEdit size={20} />
+        </Link>
+      </div>
     </div>
   );
 };
