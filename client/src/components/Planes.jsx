@@ -11,7 +11,7 @@ import { useSortPlane } from "../hooks/useSortPlane.js";
 export const Planes = () => {
   const dispatch = useDispatch();
   const { planes, isLoading } = useSelector((state) => state.planes);
-  const { sortedPlanes, toggleSort, sortBy, setSortBy, isDescSort } = useSortPlane(planes || []); // Передаем пустой массив, если planes нет
+  const { sortedPlanes, toggleSort, sortBy, setSortBy, isDescSort } = useSortPlane(planes || []); 
   
   useEffect(() => {
     dispatch(getPlanes());

@@ -27,14 +27,14 @@ const PlaneDetails = () => {
 
   return (
     <div className={css.container}>
-      <button className={css.backButton} onClick={() => navigate(-1)}>
-        ⬅ Назад
-      </button>
       <h2>{plane.name}</h2>
       <img src={plane.planeImage} alt={plane.name} />
       <p>{plane.description}</p>
       <p><strong>Цена:</strong> {plane.price} грн</p>
       <p><strong>Вместимость:</strong> {plane.capacity} человек</p>
+      <button className={css.backButton} onClick={() => navigate(-1)}>
+        ⬅ Назад
+      </button>
     </div>
   );
 };
