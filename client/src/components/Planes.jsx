@@ -24,7 +24,7 @@ export const Planes = () => {
       <div className={css.sort}>
         <div className={css.planesHeader}>
           <Button className={css.sortBtn}>Сортировать по цене</Button>
-          <Link className={css.createPlaneBtn}>Добавить самолет</Link>
+          <Link to='/create' className={css.createPlaneBtn}>Добавить самолет</Link>
         </div>
       </div>
 
